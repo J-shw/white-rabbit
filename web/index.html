@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Follow the white rabbit</title>
+<style>
+  body {
+    background-color: black;
+    color: #00ff00;
+    font-family: monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .typewriter-container {
+    font-size: 2em;
+    white-space: nowrap;
+    position: relative;
+    z-index: 2;
+  }
+
+  #typewriter-text, #cursor {
+    text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00;
+  }
+
+  #cursor {
+    animation: blink 0.7s infinite;
+  }
+
+  @keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(to bottom, rgba(18, 16, 16, 0.1) 50%, rgba(0, 0, 0, 0.2) 50%);
+    background-size: 100% 3px;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,0) 65%, rgba(0,0,0,0.3) 100%);
+    pointer-events: none;
+    z-index: 1;
+  }
+</style>
+</head>
+<body>
+<!-- Its not here -->
+<div class="typewriter-container">
+  <span id="typewriter-text"></span><span id="cursor">|</span>
+</div>
+
+<script>
+  const textElement = document.getElementById('typewriter-text');
+  const cursorElement = document.getElementById('cursor');
+  const messages = [{"text": "Wake up, Neo...", "typeSpeed": 100, "deleteSpeed": 50, "delayBetweenMessages": 3000}, {"text": "The Matrix has you...", "typeSpeed": 500, "deleteSpeed": 50, "delayBetweenMessages": 1500}, {"text": "Follow the white rabbit.", "typeSpeed": 100, "deleteSpeed": 50, "delayBetweenMessages": 5000}];
+
+  let messageIndex = 0; 
+  let charIndex = 0;
+  function type() {
+    let message = messages[messageIndex];
+    let typingSpeed = message.typeSpeed;
+    let deletingSpeed = message.deleteSpeed;
+    let delayBetweenMessages = message.delayBetweenMessages;
+
+    if (charIndex < message.text.length) {
+      textElement.textContent += message.text.charAt(charIndex);
+      charIndex++;
+      setTimeout(type, typingSpeed);
+    } else {
+      setTimeout(del, delayBetweenMessages);
+    }
+  }
+
+  function del() {
+    let message = messages[messageIndex];
+    let typingSpeed = message.typeSpeed;
+    let deletingSpeed = message.deleteSpeed;
+
+    if (charIndex > 0) {
+      textElement.textContent = message.text.substring(0, charIndex - 1);
+      charIndex--;
+      setTimeout(del, deletingSpeed);
+    } else {
+      messageIndex++;
+      if (messageIndex >= messages.length) {
+        messageIndex = 0;
+      }
+      setTimeout(type, typingSpeed);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', (event) => {
+    type();
+  });
+
+</script>
+</body>
+</html>
