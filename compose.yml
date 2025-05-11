@@ -1,0 +1,6 @@
+services:
+  web:
+    image: ghcr.io/j-shw/j-shw/white-rabbit:latest
+    ports:
+      - "80:80"
+    restart: always
